@@ -2077,34 +2077,20 @@
                 const value = document.getElementById(filter + 'Value');
                 
                 function updateFilterValue() {
-                    if (sliderMin && sliderMax && value) {
-                        const min = parseInt(sliderMin.value);
-                        const max = parseInt(sliderMax.value);
-                        
-                        // Ensure min doesn't exceed max
-                        if (min > max) {
-                            if (event.target === sliderMin) {
-                                sliderMax.value = min;
-                            } else {
-                                sliderMin.value = max;
-                            }
-                        }
-                        
-                        value.textContent = `${Math.min(min, max)}% - ${Math.max(min, max)}%`;
-                        applyAllFilters();
+                   if (sliderMin && sliderMax && value) {
+        const min = parseInt(sliderMin.value);
+        const max = parseInt(sliderMax.value);
+
+        if (filter === 'demDonor') {
+            value.textContent = `${Math.min(min, max)} - ${Math.max(min, max)}`;
+        } else {
+            value.textContent = `${Math.min(min, max)}% - ${Math.max(min, max)}%`;
+        }
+
+        applyAllFilters();
                     }
-                    if (filter === 'demDonor') {
-    value.textContent = `${Math.min(min, max)} - ${Math.max(min, max)}`;
-} else {
-    value.textContent = `${Math.min(min, max)}% - ${Math.max(min, max)}%`;
-}
 
                 }
-                
-                if (sliderMin) sliderMin.addEventListener('input', updateFilterValue);
-                if (sliderMax) sliderMax.addEventListener('input', updateFilterValue);
-            });
-        }
 
         // Apply all filters with range support
         function applyAllFilters() {
