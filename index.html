@@ -596,6 +596,17 @@
                     <div class="filter-value" id="antitrumpValue">0% - 100%</div>
                 </div>
             </div>
+
+            <div class="filter-item">
+    <div class="filter-label">Dem Donors (count)</div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        <input type="range" class="filter-slider" id="demDonorSliderMin" min="1" max="100" value="1" style="flex: 1;">
+        <span style="font-size: 10px;">to</span>
+        <input type="range" class="filter-slider" id="demDonorSliderMax" min="1" max="100" value="100" style="flex: 1;">
+    </div>
+    <div class="filter-value" id="demDonorValue">1 - 100</div>
+</div>
+
             
             <div class="section" id="summarySection">
                 <div class="section-title">Selected Precincts Summary</div>
@@ -2058,7 +2069,7 @@
 
         // Setup filters with range support
         function setupFilters() {
-            const filters = ['dem', 'rep', 'turnout', 'white', 'black', 'hispanic', 'asian', 'antitrump'];
+            const filters = ['dem', 'rep', 'turnout', 'white', 'black', 'hispanic', 'asian', 'antitrump', 'demDonor'];
             
             filters.forEach(filter => {
                 const sliderMin = document.getElementById(filter + 'SliderMin');
@@ -2082,6 +2093,12 @@
                         value.textContent = `${Math.min(min, max)}% - ${Math.max(min, max)}%`;
                         applyAllFilters();
                     }
+                    if (filter === 'demDonor') {
+    value.textContent = `${Math.min(min, max)} - ${Math.max(min, max)}`;
+} else {
+    value.textContent = `${Math.min(min, max)}% - ${Math.max(min, max)}%`;
+}
+
                 }
                 
                 if (sliderMin) sliderMin.addEventListener('input', updateFilterValue);
@@ -2109,7 +2126,9 @@
                 asianMin: parseInt(document.getElementById('asianSliderMin').value) / 100,
                 asianMax: parseInt(document.getElementById('asianSliderMax').value) / 100,
                 antitrumpMin: parseInt(document.getElementById('antitrumpSliderMin').value) / 100,
-                antitrumpMax: parseInt(document.getElementById('antitrumpSliderMax').value) / 100
+                antitrumpMax: parseInt(document.getElementById('antitrumpSliderMax').value) / 100,
+                demDonorMin: parseInt(document.getElementById('demDonorSliderMin').value),
+                demDonorMax: parseInt(document.getElementById('demDonorSliderMax').value)
             };
             
             const filteredData = {
@@ -2132,7 +2151,7 @@
                     const hispanicPct = props.Hispanic_Vap_pct || 0;
                     const asianPct = props.Asian_Vap_pct || 0;
                     const antitrumpPct = props.Anti_Trump_pct || 0;
-                    const demDonor=props.DemDonor || 0;
+                    const demDonor=Math.round(props.DemDonor || 0);
                     
                     return demPct >= filters.demMin && demPct <= filters.demMax &&
                            repPct >= filters.repMin && repPct <= filters.repMax &&
